@@ -1,6 +1,26 @@
-import logo from './logo.svg';
+import React from 'react';
+//import logo from './logo.svg';
 import './App.css';
+import MovieHeader from "./components/movieHeader";
+import {HashRouter, Route} from "react-router-dom";
+import {Provider} from 'react-redux';
+import store from './stores/store';
 
+function App() {
+  return (
+      <div className="App>">
+        <Provider store={store}>
+          <HashRouter>
+            <div>
+              <MovieHeader />
+              <Route exact path="/" render={()=><p>Movie List</p>}/>
+            </div>
+          </HashRouter>
+        </Provider>
+      </div>
+  );
+}
+/*
 function App() {
   return (
     <div className="App">
@@ -22,5 +42,5 @@ function App() {
     </div>
   );
 }
-
+*/
 export default App;
