@@ -1,7 +1,7 @@
-import actionTypes from "../constants/actionTypes";
+import actionTypes from '../constants/actionTypes';
 import runtimeEnv from '@mars/heroku-js-runtime-env'
 
-function userLoggedIn(username){
+function userLoggedIn(username) {
     return {
         type: actionTypes.USER_LOGGEDIN,
         username: username
@@ -17,15 +17,15 @@ function logout() {
 export function submitLogin(data) {
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/signin`,{
+        return fetch(`${env.REACT_APP_API_URL}/signin`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-        },
+            },
             body: JSON.stringify(data),
             mode: 'cors'
-    }).then((response) => {
+        }).then((response) => {
             if (!response.ok) {
                 throw Error(response.statusText);
             }
@@ -42,7 +42,7 @@ export function submitLogin(data) {
 export function submitRegister(data) {
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/signup`,{
+        return fetch(`${env.REACT_APP_API_URL}/signup`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
