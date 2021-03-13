@@ -1,29 +1,43 @@
 import actionTypes from '../constants/actionTypes';
 import runtimeEnv from '@mars/heroku-js-runtime-env';
 
-function userLoggedIn(username){
+function moviesFetched(movies) {
     return {
-        type: actionTypes.USER_LOGGEDIN,
-        username: username
+        type: actionTypes.FETCH_MOVIES,
+        movies: movies
     }
 }
 
-function logout(){
+function movieFetched(movie) {
     return {
-        type: actionTypes.USER_LOGOUT
+        type: actionTypes.FETCH_MOVIE,
+        selectedMovie: movie
     }
 }
 
-export function submitLogin(data){
+function movieSet(movie) {
+    return {
+        type: actionTypes.SET_MOVIE,
+        selectedMovie: movie
+    }
+}
+
+export function setMovie(movie) {
+    return dispatch => {
+        dispatch(movieSet(movie))
+    }
+}
+
+export function fetchMovies() {
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/signin`, {
-            method: 'POST',
+        return fetch(`${env.REACT_APP_API_URL}/movies?reviews=true`, {
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
-            body: JSON.stringify(data),
             mode: 'cors'})
             .then( (response) => {
                 if (!response.ok) {
@@ -32,25 +46,22 @@ export function submitLogin(data){
                 return response.json();
             })
             .then( (res) => {
-                localStorage.setItem('username', data.username);
-                localStorage.setItem('token', res.token);
-
-                dispatch(userLoggedIn(data.username));
+                dispatch(moviesFetched(res));
             })
             .catch( (e) => console.log(e) );
     }
 }
 
-export function submitRegister(data){
+export function fetchMovie(movieId){
     const env = runtimeEnv();
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/signup`, {
-            method: 'POST',
+        return fetch(`${env.REACT_APP_API_URL}/movies/${movieId}?reviews=true`, {
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
-            body: JSON.stringify(data),
             mode: 'cors'})
             .then( (response) => {
                 if (!response.ok) {
@@ -59,17 +70,8 @@ export function submitRegister(data){
                 return response.json();
             })
             .then( (res) => {
-
-                dispatch(submitLogin(data));
+                dispatch(movieFetched(res));
             })
             .catch( (e) => console.log(e) );
-    }
-}
-
-export function logoutUser() {
-    return dispatch => {
-        localStorage.removeItem('username');
-        localStorage.removeItem('token');
-        dispatch(logout());
     }
 }
