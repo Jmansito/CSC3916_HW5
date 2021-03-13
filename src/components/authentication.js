@@ -24,6 +24,7 @@ class Authentication extends Component {
         });
     }
 
+
     showReg(){
         this.setState({
             toggleReg: true
