@@ -8,7 +8,7 @@ class MovieHeader extends Component {
     logout() {
         this.props.dispatch(logoutUser());
     }
-
+//k
     render() {
         return (
             <div>
