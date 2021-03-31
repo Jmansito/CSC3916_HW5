@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {Navbar, NavItem, Nav} from 'react-bootstrap';
+import {Navbar, Nav} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 import {logoutUser} from "../actions/authActions";
 
 class MovieHeader extends Component {
@@ -13,23 +12,24 @@ class MovieHeader extends Component {
     render() {
         return (
             <div>
-                <Navbar>
-                    <Navbar.Header>
-                        <Navbar.Brand>
+                <Navbar expand="lg" bg="dark" variant="dark">
+                    <Navbar.Brand>
                         Movie App
-                        </Navbar.Brand>
-                    </Navbar.Header>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
                     <Nav>
-                        <LinkContainer to="/movielist">
-                            <NavItem eventKey={1} disabled={!this.props.loggedIn}>Movie List</NavItem>
-                        </LinkContainer>
-                        <LinkContainer to={'/movie' + (this.props.selectedMovie ? this.props.selectedMovie._id : '')}>
-                            <NavItem eventKey={2} disabled={!this.props.loggedIn}>Movie Detail</NavItem>
-                        </LinkContainer>
-                        <LinkContainer to="/signin">
-                            <NavItem eventKey={3}>{this.props.loggedIn ? <button onClick={this.logout.bind(this)}>Logout</button> : 'Login'}</NavItem>
-                        </LinkContainer>
+                            <LinkContainer to="/movielist">
+                                <Nav.Link disabled={!this.props.loggedIn}>Movie List</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to={'/movie/' + (this.props.selectedMovie ? this.props.selectedMovie._id : '')}>
+                                <Nav.Link disabled={!this.props.loggedIn}>Movie Detail</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to="/signin">
+                                <Nav.Link>{this.props.loggedIn ? <button onClick={this.logout.bind(this)}>Logout</button> : 'Login'}</Nav.Link>
+                            </LinkContainer>
                     </Nav>
+                    </Navbar.Collapse>
                 </Navbar>
             </div>
         )
@@ -40,8 +40,8 @@ const mapStateToProps = state => {
     return {
         loggedIn : state.auth.loggedIn,
         username : state.auth.username,
-        selectedMovie: ''
+        selectedMovie: state.movie.selectedMovie
     }
 }
 
-export default withRouter(connect(mapStateToProps)(MovieHeader));
+export default connect(mapStateToProps)(MovieHeader);
