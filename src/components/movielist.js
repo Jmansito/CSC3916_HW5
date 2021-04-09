@@ -8,6 +8,7 @@ import { BsStarFill} from 'react-icons/bs'
 import {LinkContainer} from 'react-router-bootstrap';
 
 class MovieList extends Component {
+
     constructor(props) {
         super(props);
         this.handleSelect = this.handleSelect.bind(this);
@@ -49,13 +50,12 @@ class MovieList extends Component {
                             </Carousel.Caption>
                         </Carousel.Item>
                     )}
-
                 </Carousel>
             )
         }
 
         return (
-            <MovieListCarousel movieList={this.props.movies} />
+            <MovieListCarousel movieList={this.props.movies}/>
         )
     }
 }
@@ -67,4 +67,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(MovieList);
+
 
